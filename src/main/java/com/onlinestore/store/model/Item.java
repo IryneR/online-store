@@ -12,6 +12,6 @@ public class Item {
     private String name;
     private BigDecimal price;
     private Discount discount;
-    private String category;
+    private Category category;
     private int count;
 }
