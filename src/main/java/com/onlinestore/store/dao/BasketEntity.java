@@ -10,11 +10,12 @@ import java.util.List;
 
 @Setter
 @Getter
-@Entity
-@Table(name = "basket")
+/*@Entity
+@Table(name = "basket")*/
 public class BasketEntity {
     @Id
         private int id;
+
     @Column
     @OneToMany
         private List<BasketItemEntity> itemList;

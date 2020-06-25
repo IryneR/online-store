@@ -10,8 +10,8 @@ import javax.persistence.Table;
 
 @Setter
 @Getter
-@Entity
-@Table(name = "category")
+/*@Entity
+@Table(name = "category")*/
 public class CategoryEntity {
     @Id
         private int id;
