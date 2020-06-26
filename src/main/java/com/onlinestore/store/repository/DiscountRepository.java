@@ -1,4 +1,10 @@
 package com.onlinestore.store.repository;
 
-public class DiscountRepository {
+import com.onlinestore.store.dao.CategoryEntity;
+import com.onlinestore.store.dao.DiscountEntity;
+import org.springframework.data.repository.CrudRepository;
+
+
+public interface DiscountRepository extends CrudRepository<DiscountEntity, Integer> {
+
 }

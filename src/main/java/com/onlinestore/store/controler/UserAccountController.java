@@ -2,6 +2,7 @@ package com.onlinestore.store.controler;
 
 import com.onlinestore.store.model.UserAccount;
 import com.onlinestore.store.service.UserAccountService;
+import com.onlinestore.store.to.AddMoney;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,5 +51,12 @@ public class UserAccountController {
     public ResponseEntity<Integer> deleteUserAccount(@PathVariable Integer id) {
         userAccountService.removeUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Integer> addMoney(@RequestBody AddMoney credit) {
+        userAccountService.addMoney(credit);
+        return ResponseEntity.status(HttpStatus.OK).build();
+
     }
 }

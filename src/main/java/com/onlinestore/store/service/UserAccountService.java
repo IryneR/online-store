@@ -3,6 +3,7 @@ package com.onlinestore.store.service;
 import com.onlinestore.store.dao.UserAccountEntity;
 import com.onlinestore.store.model.UserAccount;
 import com.onlinestore.store.repository.UserAccountRepository;
+import com.onlinestore.store.to.AddMoney;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,15 @@ public class UserAccountService {
         userAccountEntity.setCredit(BigDecimal.ZERO);
         userAccountEntity = userAccountRepository.save(userAccountEntity);
         return userAccountEntity.getId();
+    }
+
+    public void addMoney(AddMoney credit) {
+        Optional<UserAccountEntity> optionalUser = userAccountRepository.findById(credit.getId());
+        if (optionalUser.isPresent()) {
+            UserAccountEntity userAccountEntity = optionalUser.get();
+            userAccountEntity.setCredit(credit.getCredit());
+            userAccountRepository.save(userAccountEntity);
+        }
     }
 }
 
