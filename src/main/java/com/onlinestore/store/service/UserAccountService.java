@@ -1,5 +1,6 @@
 package com.onlinestore.store.service;
 
+import com.onlinestore.store.dao.BasketEntity;
 import com.onlinestore.store.dao.UserAccountEntity;
 import com.onlinestore.store.model.UserAccount;
 import com.onlinestore.store.repository.UserAccountRepository;
@@ -7,12 +8,11 @@ import com.onlinestore.store.to.AddMoney;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
 
 @Service
 public class UserAccountService {
@@ -70,7 +70,11 @@ public class UserAccountService {
         userAccountEntity.setMiddleName(user.getMiddleName());
         userAccountEntity.setLastName(user.getLastName());
         userAccountEntity.setCredit(BigDecimal.ZERO);
+        BasketEntity basketEntity = new BasketEntity();
+        basketEntity.setTotalPrice(BigDecimal.ZERO);
+        userAccountEntity.setBasket(basketEntity);
         userAccountEntity = userAccountRepository.save(userAccountEntity);
+
         return userAccountEntity.getId();
     }
 

@@ -1,6 +1,5 @@
 package com.onlinestore.store.dao;
 
-import com.onlinestore.store.model.BasketItem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,19 +10,21 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@Table(name = "basket")
-public class BasketEntity {
+@Table(name = "order")
+public class OrderEntity {
     @Id
     private int id;
 
-    @Column(name = "basket_item_id")
+    @Column(name = "order_item_id")
     @OneToMany
-    private List<BasketItemEntity> itemList;
+    private List<OrderItemEntity> itemList;
 
-    @Column("total_price")
+    @Column(name = "total_price")
     private BigDecimal totalPrice;
 
     @Column
     private int count;
 
+    @Column
+    private String status;
 }

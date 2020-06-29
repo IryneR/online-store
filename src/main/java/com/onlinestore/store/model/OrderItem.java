@@ -5,9 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Discount {
-    private int id;
-    private String name;
-    private Integer percent;
-
+public class OrderItem {
+    private Item item;
+    private int count;
 }

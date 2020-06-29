@@ -1,20 +1,16 @@
 package com.onlinestore.store.service;
 
+import com.onlinestore.store.dao.BasketEntity;
 import com.onlinestore.store.dao.CategoryEntity;
 import com.onlinestore.store.dao.DiscountEntity;
 import com.onlinestore.store.dao.ItemEntity;
-import com.onlinestore.store.dao.UserAccountEntity;
 import com.onlinestore.store.model.Category;
 import com.onlinestore.store.model.Discount;
 import com.onlinestore.store.model.Item;
-import com.onlinestore.store.model.UserAccount;
 import com.onlinestore.store.repository.ItemRepository;
-import com.onlinestore.store.repository.UserAccountRepository;
-import com.onlinestore.store.to.AddMoney;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +38,7 @@ public class ItemService {
             DiscountEntity discountEntity = itemEntity.getDiscount();
             Discount discount = new Discount();
             discount.setName(discountEntity.getName());
+            discount.setPercent(discountEntity.getPercent());
             item.setDiscount(discount);
 
             items.add(item);
@@ -66,6 +63,7 @@ public class ItemService {
             DiscountEntity discountEntity = itemEntity.getDiscount();
             Discount discount = new Discount();
             discount.setName(discountEntity.getName());
+            discount.setPercent(discountEntity.getPercent());
             item.setDiscount(discount);
             return Optional.of(item);
         }
@@ -88,6 +86,7 @@ public class ItemService {
             Discount discount = item.getDiscount();
             DiscountEntity discountEntity = new DiscountEntity();
             discountEntity.setName(discount.getName());
+            discountEntity.setPercent(discount.getPercent());
             itemEntity.setDiscount(discountEntity);
 
             itemRepository.save(itemEntity);
@@ -112,6 +111,7 @@ public class ItemService {
         Discount discount = item.getDiscount();
         DiscountEntity discountEntity = new DiscountEntity();
         discountEntity.setName(discount.getName());
+        discountEntity.setPercent(discount.getPercent());
         itemEntity.setDiscount(discountEntity);
 
         itemEntity = itemRepository.save(itemEntity);

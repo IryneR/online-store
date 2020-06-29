@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,7 +27,12 @@ public class UserAccountEntity {
 
     @Column
     private BigDecimal credit;
-  /*  @Column(name = "basket_id")
+
+    @Column(name = "basket_id")
     @OneToOne
-    private BasketEntity basketId;*/
+    private BasketEntity basket;
+
+    @Column(name = "order_id")
+    @OneToMany
+    private List<OrderEntity> orders;
 }

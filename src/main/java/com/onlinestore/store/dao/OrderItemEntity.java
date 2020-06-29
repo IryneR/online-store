@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "basket_item")
-public class BasketItemEntity {
+@Table(name = "order_item")
+public class OrderItemEntity {
     @Id
     private int id;
     @Column

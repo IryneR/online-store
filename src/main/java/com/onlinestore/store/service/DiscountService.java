@@ -1,10 +1,7 @@
 package com.onlinestore.store.service;
 
 import com.onlinestore.store.dao.DiscountEntity;
-import com.onlinestore.store.dao.DiscountEntity;
 import com.onlinestore.store.model.Discount;
-import com.onlinestore.store.model.Discount;
-import com.onlinestore.store.repository.CategoryRepository;
 import com.onlinestore.store.repository.DiscountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,20 +27,6 @@ public class DiscountService {
         return discounts;
     }
 
-   /* public Optional<Category> getCategory(int itemId) {
-        Category item = new Category();
-        Optional<CategoryEntity> optionalCategoryEntity = categoryRepository.findById(itemId);
-        if (optionalItemEntity.isPresent()) {
-            ItemEntity itemEntity = optionalItemEntity.get();
-            item.setName(itemEntity.getName());
-            item.setCount(itemEntity.getCount());
-            item.setPrice(itemEntity.getPrice());
-
-            return Optional.of(item);
-        }
-        return Optional.empty();
-    }*/
-
     public void updateDiscount(Discount discount) {
         Optional<DiscountEntity> optionalDiscountEntity = discountRepository.findById(discount.getId());
         if (optionalDiscountEntity.isPresent()) {
@@ -61,6 +44,7 @@ public class DiscountService {
     public int createNewDiscount(Discount discount) {
         DiscountEntity discountEntity = new DiscountEntity();
         discountEntity.setName(discount.getName());
+        discountEntity.setPercent(discount.getPercent());
 
         discountEntity = discountRepository.save(discountEntity);
         return discountEntity.getId();

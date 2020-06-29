@@ -10,11 +10,13 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
-/*@Entity
-@Table(name = "discount")*/
+@Entity
+@Table(name = "discount")
 public class DiscountEntity {
     @Id
     private int id;
     @Column
     private String name;
+    @Column
+    private Integer percent;
 }
