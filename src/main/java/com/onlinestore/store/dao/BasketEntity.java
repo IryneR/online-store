@@ -1,6 +1,5 @@
 package com.onlinestore.store.dao;
 
-import com.onlinestore.store.model.BasketItem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,17 +13,16 @@ import java.util.List;
 @Table(name = "basket")
 public class BasketEntity {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
 
-    @OneToMany(mappedBy = "basket_item")
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id")
     private List<BasketItemEntity> itemList;
 
-    @Column("total_price")
-    private BigDecimal totalPrice;
-
     @Column
     private int count;
-
 }

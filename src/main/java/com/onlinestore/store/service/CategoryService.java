@@ -1,13 +1,8 @@
 package com.onlinestore.store.service;
 
 import com.onlinestore.store.dao.CategoryEntity;
-import com.onlinestore.store.dao.DiscountEntity;
-import com.onlinestore.store.dao.CategoryEntity;
 import com.onlinestore.store.model.Category;
-import com.onlinestore.store.model.Discount;
-import com.onlinestore.store.model.Item;
 import com.onlinestore.store.repository.CategoryRepository;
-import com.onlinestore.store.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,25 +21,12 @@ public class CategoryService {
         List<Category> categories = new ArrayList<>();
         categoryEntities.forEach(categoryElement -> {
             Category category = new Category();
+            category.setId(categoryElement.getId());
             category.setName(categoryElement.getName());
             categories.add(category);
         });
         return categories;
     }
-
-   /* public Optional<Category> getCategory(int itemId) {
-        Category item = new Category();
-        Optional<CategoryEntity> optionalCategoryEntity = categoryRepository.findById(itemId);
-        if (optionalItemEntity.isPresent()) {
-            ItemEntity itemEntity = optionalItemEntity.get();
-            item.setName(itemEntity.getName());
-            item.setCount(itemEntity.getCount());
-            item.setPrice(itemEntity.getPrice());
-
-            return Optional.of(item);
-        }
-        return Optional.empty();
-    }*/
 
     public void updateCategory(Category category) {
         Optional<CategoryEntity> optionalCategoryEntity = categoryRepository.findById(category.getId());

@@ -10,13 +10,14 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@Table(name = "order")
+@Table(name = "user_order")
 public class OrderEntity {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(name = "order_item_id")
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
     private List<OrderItemEntity> itemList;
 
     @Column(name = "total_price")

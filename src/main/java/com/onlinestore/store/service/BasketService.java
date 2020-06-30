@@ -54,7 +54,6 @@ public class BasketService {
         }
     }
 
-
     public void deleteItemById(int userId, int itemId) {
         BasketEntity basketEntity = userAccountRepository.findById(userId).get().getBasket();
         List<BasketItemEntity> basketItemsEntity = basketEntity.getItemList();
@@ -106,12 +105,15 @@ public class BasketService {
         List<BasketItem> basketItems = basket.getItems();
         List<BasketItemEntity> basketItemEntities = new ArrayList<>();
 
+        int count = 0;
         for (BasketItem basketItem : basketItems) {
             basketItemEntities.add(createBasketItemEntity(basketItem));
+            count = count + basketItem.getCount();
         }
 
         basketEntity.setItemList(basketItemEntities);
         basketEntity.setTotalPrice(calculateTotalPrice(basketEntity.getItemList()));
+        basketEntity.setCount(count);
 
         basketRepository.save(basketEntity);
     }
@@ -130,6 +132,7 @@ public class BasketService {
 
         //create item entity
         ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setId(basketItem.getItem().getId());
         itemEntity.setCount(basketItem.getItem().getCount());
         itemEntity.setName(basketItem.getItem().getName());
         itemEntity.setPrice(basketItem.getItem().getPrice());
@@ -161,7 +164,7 @@ public class BasketService {
         for (BasketItemEntity basketItemEntity : basketItemsEntity) {
             BigDecimal price = basketItemEntity.getItem().getPrice().multiply(BigDecimal.valueOf(basketItemEntity.getCount()));
             sum = sum.add(price);
-            BigDecimal discount = BigDecimal.valueOf(basketItemEntity.getItem().getDiscount().getPercent() / 100);
+            BigDecimal discount = BigDecimal.valueOf(basketItemEntity.getItem().getDiscount().getPercent()).divide(BigDecimal.valueOf(100));
             discounts = discounts.add(price.multiply(discount));
         }
         return sum.subtract(discounts);

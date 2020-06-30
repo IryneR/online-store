@@ -20,7 +20,7 @@ public class BasketController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping
+    @PostMapping("/pay")
     public ResponseEntity<Integer> pay(@RequestBody NewBasket basket) {
         Boolean payed = basketService.pay(basket);
         if (payed)
@@ -36,7 +36,7 @@ public class BasketController {
 
     }
 
-    @DeleteMapping("/{userId}/{id}")
+    @DeleteMapping("/{userId}/{id}/all")
     public ResponseEntity<Integer> deleteItems(@PathVariable Integer userId, @PathVariable Integer itemId) {
         basketService.deleteAllItemsById(userId, itemId);
         return ResponseEntity.status(HttpStatus.OK).build();

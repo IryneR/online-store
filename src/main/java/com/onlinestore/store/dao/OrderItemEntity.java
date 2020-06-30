@@ -11,9 +11,10 @@ import javax.persistence.*;
 @Table(name = "order_item")
 public class OrderItemEntity {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column
+    @JoinColumn(name = "item_id")
     @OneToOne
     private ItemEntity item;
 
@@ -21,6 +22,6 @@ public class OrderItemEntity {
     private int count;
 
     @ManyToOne
-    @Column(name = "order_id")
+    @JoinColumn(name = "order_id")
     private OrderEntity order;
 }

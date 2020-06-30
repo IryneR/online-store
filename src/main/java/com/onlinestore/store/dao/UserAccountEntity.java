@@ -28,11 +28,11 @@ public class UserAccountEntity {
     @Column
     private BigDecimal credit;
 
-    @Column(name = "basket_id")
-    @OneToOne
+    @JoinColumn(name = "basket_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private BasketEntity basket;
 
-    @Column(name = "order_id")
-    @OneToMany
+    @JoinColumn(name = "user_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders;
 }

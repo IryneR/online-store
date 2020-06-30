@@ -25,6 +25,7 @@ public class UserAccountService {
         List<UserAccount> userAccounts = new ArrayList<>();
         userAccountEntityList.forEach(userAccountEntity -> {
             UserAccount userAccount = new UserAccount();
+            userAccount.setId(userAccountEntity.getId());
             userAccount.setLastName(userAccountEntity.getLastName());
             userAccount.setFirstName(userAccountEntity.getFirstName());
             userAccount.setCredit(userAccount.getCredit());
@@ -78,13 +79,15 @@ public class UserAccountService {
         return userAccountEntity.getId();
     }
 
-    public void addMoney(AddMoney credit) {
+    public boolean addMoney(AddMoney credit) {
         Optional<UserAccountEntity> optionalUser = userAccountRepository.findById(credit.getId());
         if (optionalUser.isPresent()) {
             UserAccountEntity userAccountEntity = optionalUser.get();
             userAccountEntity.setCredit(credit.getCredit());
             userAccountRepository.save(userAccountEntity);
+            return true;
         }
+        return false;
     }
 }
 

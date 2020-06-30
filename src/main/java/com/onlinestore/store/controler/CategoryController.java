@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/category")
@@ -20,18 +18,9 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<Integer> createNewCategory(@RequestBody Category category) {
-        Integer categoryId  = categoryService.createNewCategory(category);
+        Integer categoryId = categoryService.createNewCategory(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryId);
     }
-
-   /* @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategory(@PathVariable Integer id) {
-        Optional<Category> optionalCategory = categoryService.(id);
-        if (optionalCategory.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(optionalCategory.get());
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }*/
 
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories() {

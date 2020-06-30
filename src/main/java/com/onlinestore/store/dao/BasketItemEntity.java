@@ -11,16 +11,17 @@ import javax.persistence.*;
 @Table(name = "basket_item")
 public class BasketItemEntity {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @OneToOne
-    @Column
+    @JoinColumn(name = "item_id")
     private ItemEntity item;
 
     @Column
     private int count;
 
     @ManyToOne
-    @Column(name = "basket_id")
+    @JoinColumn(name = "basket_id")
     private BasketEntity basket;
 }

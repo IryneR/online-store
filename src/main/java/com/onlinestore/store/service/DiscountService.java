@@ -21,6 +21,7 @@ public class DiscountService {
         List<Discount> discounts = new ArrayList<>();
         discountsEntity.forEach(discountElement -> {
             Discount discount = new Discount();
+            discount.setId(discountElement.getId());
             discount.setName(discountElement.getName());
             discounts.add(discount);
         });

@@ -1,6 +1,5 @@
 package com.onlinestore.store.model;
 
-import com.onlinestore.store.dao.BasketEntity;
 import lombok.Getter;
 import lombok.Setter;
 
