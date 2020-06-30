@@ -12,9 +12,15 @@ import javax.persistence.*;
 public class BasketItemEntity {
     @Id
     private int id;
-    @Column
+
     @OneToOne
+    @Column
     private ItemEntity item;
+
     @Column
     private int count;
+
+    @ManyToOne
+    @Column(name = "basket_id")
+    private BasketEntity basket;
 }

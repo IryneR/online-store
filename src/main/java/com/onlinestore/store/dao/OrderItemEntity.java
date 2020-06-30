@@ -12,9 +12,15 @@ import javax.persistence.*;
 public class OrderItemEntity {
     @Id
     private int id;
+
     @Column
     @OneToOne
     private ItemEntity item;
+
     @Column
     private int count;
+
+    @ManyToOne
+    @Column(name = "order_id")
+    private OrderEntity order;
 }

@@ -16,8 +16,9 @@ public class BasketEntity {
     @Id
     private int id;
 
-    @Column(name = "basket_item_id")
-    @OneToMany
+
+    @OneToMany(mappedBy = "basket_item")
+    @JoinColumn(name = "basket_id")
     private List<BasketItemEntity> itemList;
 
     @Column("total_price")
