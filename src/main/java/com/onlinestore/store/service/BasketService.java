@@ -3,6 +3,7 @@ package com.onlinestore.store.service;
 import com.onlinestore.store.dao.*;
 import com.onlinestore.store.model.*;
 import com.onlinestore.store.repository.BasketRepository;
+import com.onlinestore.store.repository.ItemRepository;
 import com.onlinestore.store.repository.UserAccountRepository;
 import com.onlinestore.store.to.NewBasket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BasketService {
@@ -19,7 +22,8 @@ public class BasketService {
     private BasketRepository basketRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
-
+    @Autowired
+    private ItemRepository itemRepository;
 
     public boolean pay(NewBasket basket) {
         UserAccountEntity userAccountEntity = userAccountRepository.findById(basket.getUserId()).get();
@@ -37,6 +41,8 @@ public class BasketService {
             List<OrderItemEntity> orderItemEntities = new ArrayList<>();
             for (BasketItemEntity basketItemEntity : basketEntity.getItemList()) {
                 orderItemEntities.add(createOrderItemEntity(basketItemEntity));
+                basketItemEntity.getItem().setCount(basketItemEntity.getItem().getCount()-basketItemEntity.getCount());
+                itemRepository.save( basketItemEntity.getItem());
             }
             basketEntity.setTotalPrice(BigDecimal.ZERO);
             basketEntity.setCount(0);
@@ -105,10 +111,22 @@ public class BasketService {
         List<BasketItem> basketItems = basket.getItems();
         List<BasketItemEntity> basketItemEntities = new ArrayList<>();
 
+        Map<Integer, BasketItemEntity> idToItem = basketEntity.getItemList()
+                .stream()
+                .collect(Collectors.toMap(BasketItemEntity::getId, basketItemEntity -> basketItemEntity));
+
         int count = 0;
+
         for (BasketItem basketItem : basketItems) {
-            basketItemEntities.add(createBasketItemEntity(basketItem));
-            count = count + basketItem.getCount();
+            Integer storeItemCount = idToItem.get(basketItem.getItem().getId()).getCount();
+            if ((basketItem.getCount() <= storeItemCount) && (basketItem.getCount() != 0)) {
+                basketItemEntities.add(createBasketItemEntity(basketItem));
+                count = count + basketItem.getCount();
+            } else if ((basketItem.getCount() > storeItemCount)) {
+                basketItem.setCount(storeItemCount);
+                basketItemEntities.add(createBasketItemEntity(basketItem));
+                count = count + basketItem.getCount();
+            }
         }
 
         basketEntity.setItemList(basketItemEntities);
