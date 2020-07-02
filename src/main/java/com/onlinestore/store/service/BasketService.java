@@ -8,15 +8,14 @@ import com.onlinestore.store.repository.UserAccountRepository;
 import com.onlinestore.store.to.NewBasket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class BasketService {
     @Autowired
     private BasketRepository basketRepository;
@@ -24,6 +23,8 @@ public class BasketService {
     private UserAccountRepository userAccountRepository;
     @Autowired
     private ItemRepository itemRepository;
+
+    private static final int NUMBER_OF_DISCOUNTS = 3;
 
     public boolean pay(NewBasket basket) {
         UserAccountEntity userAccountEntity = userAccountRepository.findById(basket.getUserId()).get();
@@ -41,8 +42,8 @@ public class BasketService {
             List<OrderItemEntity> orderItemEntities = new ArrayList<>();
             for (BasketItemEntity basketItemEntity : basketEntity.getItemList()) {
                 orderItemEntities.add(createOrderItemEntity(basketItemEntity));
-                basketItemEntity.getItem().setCount(basketItemEntity.getItem().getCount()-basketItemEntity.getCount());
-                itemRepository.save( basketItemEntity.getItem());
+                basketItemEntity.getItem().setCount(basketItemEntity.getItem().getCount() - basketItemEntity.getCount());
+                itemRepository.save(basketItemEntity.getItem());
             }
             basketEntity.setTotalPrice(BigDecimal.ZERO);
             basketEntity.setCount(0);
@@ -177,15 +178,25 @@ public class BasketService {
 
     public BigDecimal calculateTotalPrice(List<BasketItemEntity> basketItemsEntity) {
         BigDecimal sum = BigDecimal.ZERO;
-        BigDecimal discounts = BigDecimal.ZERO;
+        BigDecimal discount = BigDecimal.ZERO;
+        List<BigDecimal> discounts = new ArrayList<>();
 
         for (BasketItemEntity basketItemEntity : basketItemsEntity) {
-            BigDecimal price = basketItemEntity.getItem().getPrice().multiply(BigDecimal.valueOf(basketItemEntity.getCount()));
-            sum = sum.add(price);
-            BigDecimal discount = BigDecimal.valueOf(basketItemEntity.getItem().getDiscount().getPercent()).divide(BigDecimal.valueOf(100));
-            discounts = discounts.add(price.multiply(discount));
+            BigDecimal priceForItem = basketItemEntity.getItem().getPrice().multiply(BigDecimal.valueOf(basketItemEntity.getCount()));
+            sum = sum.add(priceForItem);
+            BigDecimal discountForItem = BigDecimal.valueOf(basketItemEntity.getItem().getDiscount().getPercent()).divide(BigDecimal.valueOf(100)).multiply(priceForItem);
+            discounts.add(discountForItem);
+            discount = discount.add(discountForItem);
         }
-        return sum.subtract(discounts);
+        if (discounts.size() > NUMBER_OF_DISCOUNTS) {
+            discount = BigDecimal.ZERO;
+            Collections.sort(discounts, Collections.reverseOrder());
+            for (int i = 0; i < NUMBER_OF_DISCOUNTS; i++) {
+                discount = discount.add(discounts.get(i));
+            }
+        }
+        return sum.subtract(discount);
     }
+
 
 }

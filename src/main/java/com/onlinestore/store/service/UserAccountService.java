@@ -7,6 +7,7 @@ import com.onlinestore.store.repository.UserAccountRepository;
 import com.onlinestore.store.to.AddMoney;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 
 @Service
+@Transactional
 public class UserAccountService {
 
     @Autowired
