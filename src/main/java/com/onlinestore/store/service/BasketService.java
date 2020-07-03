@@ -112,14 +112,10 @@ public class BasketService {
         List<BasketItem> basketItems = basket.getItems();
         List<BasketItemEntity> basketItemEntities = new ArrayList<>();
 
-        Map<Integer, BasketItemEntity> idToItem = basketEntity.getItemList()
-                .stream()
-                .collect(Collectors.toMap(BasketItemEntity::getId, basketItemEntity -> basketItemEntity));
-
         int count = 0;
 
         for (BasketItem basketItem : basketItems) {
-            Integer storeItemCount = idToItem.get(basketItem.getItem().getId()).getCount();
+            Integer storeItemCount = basketItem.getItem().getCount();
             if ((basketItem.getCount() <= storeItemCount) && (basketItem.getCount() != 0)) {
                 basketItemEntities.add(createBasketItemEntity(basketItem));
                 count = count + basketItem.getCount();
